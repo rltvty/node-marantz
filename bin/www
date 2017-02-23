@@ -25,7 +25,7 @@ var server = http.createServer(app);
 
 var eServer = eventServer(server);
 
-
+/*
 
 var all_ips = config.all_ips();
 var watchers = {};
@@ -47,7 +47,7 @@ for (var i in all_ips) {
     });
     watchers[name] = watcher;
 }
-
+*/
 
 /**
  * Listen on provided port, on all network interfaces.
