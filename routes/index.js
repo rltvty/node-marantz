@@ -36,7 +36,7 @@ router.post('/zone/:zone/volume', function(req, res, next) {
         res.status(400).json({'error' : 'level must be between 0 and 255'});
     }
     if (marantz.setVolume(req.params.zone, level)) {
-        res.sendStatus(200);
+        res.sendStatus(204);
     } else {
         res.sendStatus(404);
     }
@@ -52,7 +52,7 @@ router.post('/zone/:zone/source', function(req, res, next) {
     }
 
     if (marantz.setSource(req.params.zone, req.body.source)) {
-        res.sendStatus(200);
+        res.sendStatus(204);
     } else {
         res.sendStatus(404);
     }
