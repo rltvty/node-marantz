@@ -59,7 +59,7 @@ router.post('/zone/:zone/source', function(req, res, next) {
 });
 
 router.get('/zone/:zone/power', function(req, res, next) {
-    res.status(200).json({source: marantz.getState().main.isOn});
+    res.status(200).json({value: marantz.getState().main.isPowered});
 });
 
 router.post('/zone/:zone/power', function(req, res, next) {
@@ -71,7 +71,7 @@ router.post('/zone/:zone/power', function(req, res, next) {
 });
 
 router.get('/zone/:zone/mute', function(req, res, next) {
-    res.status(200).json({source: marantz.getState().main.isOn});
+    res.status(200).json({value: marantz.getState().main.isMuted});
 });
 
 router.post('/zone/:zone/mute', function(req, res, next) {
