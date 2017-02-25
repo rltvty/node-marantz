@@ -22,4 +22,4 @@ client.on('connect', function(connection) {
     });
 });
 
-client.connect('ws://localhost:3000/', 'event-stream');
+client.connect('ws://localhost:3002/', 'event-stream');

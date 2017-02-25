@@ -1,5 +1,8 @@
 var telnet = require('telnet-client');
 var connection = new telnet();
+var events = require('events');
+
+var myEmitter = new events.EventEmitter();
 
 var state = {
     main: {
@@ -28,58 +31,72 @@ connection.on('data', function(data) {
     data = data.toString().trim();
     switch (data) {
         case 'SISAT/CBL':
+            myEmitter.emit('source', 'AppleTV', 'main');
             state.main.source = 'AppleTV';
             console.log('Main Source: AppleTV');
             return;
         case 'SIDVD':
+            myEmitter.emit('source', 'ChromeCast', 'main');
             state.main.source = 'ChromeCast';
             console.log('Main Source: ChromeCast');
             return;
         case 'SIBD':
+            myEmitter.emit('source', 'Roku', 'main');
             state.main.source = 'Roku';
             console.log('Main Source: Roku');
             return;
         case 'Z2SAT/CBL':
+            myEmitter.emit('source', 'AppleTV', 'aux');
             state.aux.source = 'AppleTV';
             console.log('Aux Source: AppleTV');
             return;
         case 'Z2DVD':
+            myEmitter.emit('source', 'ChromeCast', 'aux');
             state.aux.source = 'ChromeCast';
             console.log('Aux Source: ChromeCast');
             return;
         case 'Z2BD':
+            myEmitter.emit('source', 'Roku', 'aux');
             state.aux.source = 'Roku';
             console.log('Aux Source: Roku');
             return;
         case 'Z2OFF':
+            myEmitter.emit('isPowered', false, 'aux');
             state.aux.isPowered = false;
             console.log('Aux Power: Off');
             return;
         case 'Z2ON':
+            myEmitter.emit('isPowered', true, 'aux');
             state.aux.isPowered = true;
             console.log('Aux Power: On');
             return;
         case 'ZMOFF':
+            myEmitter.emit('isPowered', false, 'main');
             state.main.isPowered = false;
             console.log('Main Power: Off');
             return;
         case 'ZMON':
+            myEmitter.emit('isPowered', true, 'main');
             state.main.isPowered = true;
             console.log('Main Power: On');
             return;
         case 'MUOFF':
+            myEmitter.emit('isMuted', false, 'main');
             state.main.isMuted = false;
             console.log('Main Mute: Off');
             return;
         case 'MUON':
+            myEmitter.emit('isMuted', true, 'main');
             state.main.isMuted = true;
             console.log('Main Mute: On');
             return;
         case 'Z2MUOFF':
+            myEmitter.emit('isMuted', false, 'aux');
             state.aux.isMuted = false;
             console.log('Aux Mute: Off');
             return;
         case 'Z2MUON':
+            myEmitter.emit('isMuted', true, 'aux');
             state.aux.isMuted = true;
             console.log('Aux Mute: On');
             return;
@@ -87,6 +104,7 @@ connection.on('data', function(data) {
     if (data.indexOf('MV') == 0) {
         var main_vol = getVolume(data);
         if  (main_vol !== false) {
+            myEmitter.emit('volume', main_vol, 'main');
             state.main.mainLevel = main_vol;
             console.log('Main Volume: ' + main_vol);
             return;
@@ -95,6 +113,7 @@ connection.on('data', function(data) {
     if (data.indexOf('Z2') == 0) {
         var aux_vol = getVolume(data);
         if  (aux_vol !== false) {
+            myEmitter.emit('volume', aux_vol, 'aux');
             state.aux.mainLevel = aux_vol;
             console.log('Aux Volume: ' + aux_vol);
             return;
@@ -221,4 +240,8 @@ module.exports.setSource = function(device, source) {
             return false;
     }
     return true;
+};
+
+module.exports.on = function (key, callback) {
+    myEmitter.on(key, callback);
 };

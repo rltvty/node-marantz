@@ -37,4 +37,5 @@ router.post('/zone/:zone/source/:source', function(req, res, next) {
     }
 });
 
-module.exports = router;
+module.exports.router = router;
+module.exports.marantz = marantz;

@@ -8,46 +8,34 @@ var app = require('../app');
 var debug = require('debug')('node-marantz:server');
 var http = require('http');
 var eventServer = require('../event-server');
-var request = require('../marantz-request');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+var port = normalizePort(process.env.PORT || '3002');
+app.app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = http.createServer(app.app);
 
 var eServer = eventServer(server);
 
-/*
-
-var all_ips = config.all_ips();
-var watchers = {};
-var bathrooms = {};
-
-for (var i in all_ips) {
-    var name = all_ips[i].host;
-    var watcher = watch.new(all_ips[i].ip, name);
-    watcher.on('power', function (power, name) {
-        console.log(name + ' power: ' + power);
-        eServer.sendEvent({name: name, power: power});
-    });
-    watcher.on('motion', function (motion, name) {
-        console.log(name + ' motion: ' + motion);
-    });
-    watcher.on('level', function (level, name) {
-        console.log(name + ' level: ' + level);
-        eServer.sendEvent({name: name, level: level});
-    });
-    watchers[name] = watcher;
-}
-*/
+app.marantz.on('isPowered', function (value, device) {
+    eServer.sendEvent({name: 'Audio-' + device, isPowered: value});
+});
+app.marantz.on('isMuted', function (value, device) {
+    eServer.sendEvent({name: 'Audio-' + device, isMuted: value});
+});
+app.marantz.on('source', function (value, device) {
+    eServer.sendEvent({name: 'Audio-' + device, source: value});
+});
+app.marantz.on('volume', function (value, device) {
+    eServer.sendEvent({name: 'Audio-' + device, volume: value});
+});
 
 /**
  * Listen on provided port, on all network interfaces.
