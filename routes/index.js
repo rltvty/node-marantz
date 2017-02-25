@@ -58,5 +58,29 @@ router.post('/zone/:zone/source', function(req, res, next) {
     }
 });
 
+router.get('/zone/:zone/power', function(req, res, next) {
+    res.status(200).json({source: marantz.getState().main.isOn});
+});
+
+router.post('/zone/:zone/power', function(req, res, next) {
+    if (marantz.setPower(req.params.zone, req.body.isOn)) {
+        res.sendStatus(204);
+    } else {
+        res.sendStatus(404);
+    }
+});
+
+router.get('/zone/:zone/mute', function(req, res, next) {
+    res.status(200).json({source: marantz.getState().main.isOn});
+});
+
+router.post('/zone/:zone/mute', function(req, res, next) {
+    if (marantz.setPower(req.params.zone, req.body.isOn)) {
+        res.sendStatus(204);
+    } else {
+        res.sendStatus(404);
+    }
+});
+
 module.exports.router = router;
 module.exports.marantz = marantz;
