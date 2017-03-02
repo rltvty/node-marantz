@@ -21,6 +21,7 @@ var state = {
 
 connection.on('close', function() {
     console.log('connection closed');
+    process.exit();
 });
 
 connection.on('error', function(error) {
@@ -135,6 +136,7 @@ function getVolume(data) {
     return false;
 }
 
+//TODO: add automatic reconnect logic
 connection.connect({host: 'marantz', shellPrompt: ''});
 
 setTimeout(function() { connection.send('SI?\r'); }, 1000);
@@ -213,6 +215,9 @@ module.exports.volumeDown = function(device) {
 };
 
 module.exports.setVolume = function(device, volume) {
+    if (volume < 10) {
+        volume = '0' + volume;
+    }
     switch (device) {
         case 'main':
             connection.send('MV' + volume + '\r');
