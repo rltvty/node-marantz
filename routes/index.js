@@ -4,8 +4,8 @@ var marantz = require('../marantz-client');
 
 var sources = [
     'AppleTV',
-    'Roku',
-    'ChromeCast'
+    'Mac Mini',
+    'KVM Switch'
 ];
 
 router.get('/state', function(req, res) {

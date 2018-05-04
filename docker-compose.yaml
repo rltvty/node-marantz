@@ -1,0 +1,6 @@
+version: "2"
+services:
+  node-marantz:
+    build: .
+    environment:
+      - MARANTZ_HOST=10.10.10.15

@@ -37,14 +37,14 @@ connection.on('data', function(data) {
             console.log('Main Source: AppleTV');
             return;
         case 'SIDVD':
-            myEmitter.emit('source', 'ChromeCast', 'main');
-            state.main.source = 'ChromeCast';
-            console.log('Main Source: ChromeCast');
+            myEmitter.emit('source', 'Mac Mini', 'main');
+            state.main.source = 'Mac Mini';
+            console.log('Main Source: Mac Mini');
             return;
         case 'SIBD':
-            myEmitter.emit('source', 'Roku', 'main');
-            state.main.source = 'Roku';
-            console.log('Main Source: Roku');
+            myEmitter.emit('source', 'KVM Switch', 'main');
+            state.main.source = 'KVM Switch';
+            console.log('Main Source: KVM Switch');
             return;
         case 'Z2SAT/CBL':
             myEmitter.emit('source', 'AppleTV', 'aux');
@@ -52,14 +52,14 @@ connection.on('data', function(data) {
             console.log('Aux Source: AppleTV');
             return;
         case 'Z2DVD':
-            myEmitter.emit('source', 'ChromeCast', 'aux');
-            state.aux.source = 'ChromeCast';
-            console.log('Aux Source: ChromeCast');
+            myEmitter.emit('source', 'Mac Mini', 'aux');
+            state.aux.source = 'Mac Mini';
+            console.log('Aux Source: Mac Mini');
             return;
         case 'Z2BD':
-            myEmitter.emit('source', 'Roku', 'aux');
-            state.aux.source = 'Roku';
-            console.log('Aux Source: Roku');
+            myEmitter.emit('source', 'KVM Switch', 'aux');
+            state.aux.source = 'KVM Switch';
+            console.log('Aux Source: KVM Switch');
             return;
         case 'Z2OFF':
             myEmitter.emit('isPowered', false, 'aux');
@@ -136,8 +136,10 @@ function getVolume(data) {
     return false;
 }
 
+var marantzHost = process.env.MARANTZ_HOST || 'marantz';
+
 //TODO: add automatic reconnect logic
-connection.connect({host: 'marantz', shellPrompt: ''});
+connection.connect({host: marantzHost, shellPrompt: ''});
 
 setTimeout(function() { connection.send('SI?\r'); }, 1000);
 setTimeout(function() { connection.send('ZM?\r'); }, 2000);
@@ -235,10 +237,10 @@ module.exports.setSource = function(device, source) {
         case 'AppleTV':
             connection.send(prefix + 'SAT/CBL\r');
             break;
-        case 'ChromeCast':
+        case 'Mac Mini':
             connection.send(prefix + 'DVD\r');
             break;
-        case 'Roku':
+        case 'KVM Switch':
             connection.send(prefix + 'BD\r');
             break;
         default:
